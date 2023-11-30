@@ -1,5 +1,5 @@
 function gameBoard () {
-  const board = [
+  let board = [
     [0,0,0],
     [0,0,0],
     [0,0,0]
@@ -18,14 +18,24 @@ function gameBoard () {
     logBoard();
   }
 
-  function getBoard () {
+  function getBoard() {
     return board;
+  }
+
+  function clearBoard() {
+    board = [
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ];
+    console.log(board);
   }
 
   return {
     placeMark,
     getBoard,
     checkValid,
+    clearBoard
   }
 };
 
@@ -55,18 +65,29 @@ function playControl () {
     const diag1 = [currentBoard[0][2], currentBoard[1][1], currentBoard[2][0]];
 
     const winArr = [row0, row1, row2, col0, col1, col2, diag0, diag1];
-    winArr.forEach((line) => {
-      if(!line.includes(0)) {
-        if (line[0] === line[1] && line[1] === line[2]) {
-          console.log(`Player ${line[0]} wins`)
+    
+    if (row0.includes(0) || row1.includes(0) || row2.includes(0)) {
+      winArr.forEach((line) => {
+        if(!line.includes(0)) {
+          if (line[0] === line[1] && line[1] === line[2]) {
+            console.log(`Player ${line[0]} wins`)
+          }
         }
-      }
-    });
+      });
+    } else {
+      console.log(`It's a draw!`);
+    }
+  }
+
+  function newGame() {
+    board.clearBoard();
+    currentPlayer = 1;
   }
 
   return {
     turn,
     checkWin,
+    newGame
   }
 }
 
