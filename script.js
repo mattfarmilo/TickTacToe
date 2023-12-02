@@ -70,7 +70,11 @@ function playControl () {
       winArr.forEach((line) => {
         if(!line.includes(0)) {
           if (line[0] === line[1] && line[1] === line[2]) {
-            console.log(`Player ${line[0]} wins`)
+            if (line[0] === 1) {
+              console.log(`${player1.name} wins`);
+            } else {
+              console.log(`${player2.name} wins`);
+            }
           }
         }
       });
@@ -90,6 +94,16 @@ function playControl () {
     newGame
   }
 }
+
+function player (name, token) {
+  return {
+    name: name,
+    token: token
+  }
+}
+
+const player1 = player('Matt', 'x');
+const player2 = player('Andrea', 'o');
 
 const play = playControl();
 const board = gameBoard();
