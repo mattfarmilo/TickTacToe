@@ -1,0 +1,22 @@
+main {
+  display: flex;
+  width: 100%;
+}
+
+.player {
+  flex: 1;
+}
+
+#game {
+  flex: 3;
+  height: 300px;
+}
+
+#board {
+  display: grid;
+  grid: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+.boardSquare {
+  height: 60px;
+}
