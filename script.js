@@ -41,16 +41,21 @@ function gameBoard () {
 
 function playControl () {
   const board = gameBoard();
-  let currentPlayer = player1;
+  let currentPlayer;
+  const message = document.getElementById('message');
+  let stop = false
   
   function turn(row, col) {
     if (board.checkValid(row, col)) {
       board.placeMark(currentPlayer, row, col);
       display.turn(row, col, currentPlayer.token);
       checkWin();
-      currentPlayer = currentPlayer === player1 ? player2 : player1;
+      if (!stop) {
+        currentPlayer = currentPlayer === player1 ? player2 : player1;
+        display.showNextTurn();
+      }  
     } else {
-      console.log('Invalid move');
+      message.innerText = 'Invalid move';
     }
   }
 
@@ -67,18 +72,20 @@ function playControl () {
 
     const winArr = [row0, row1, row2, col0, col1, col2, diag0, diag1];
     
-    if (row0.includes(0) || row1.includes(0) || row2.includes(0)) {
-      winArr.forEach((line) => {
-        if(!line.includes(0)) {
+    if (!row0.includes(0) && !row1.includes(0) && !row2.includes(0)) {
+      message.innerText = `It's a draw!`;
+      stop = true;
+      display.toggleLock();
+    } else {
+    winArr.forEach((line) => {
+        if (!line.includes(0)){
           if (line[0] === line[1] && line[1] === line[2]) {
             display.toggleLock();
-            console.log(`${line[0].name} wins!`)
+            message.innerText = `${currentPlayer.name} wins!`;
+            stop = true
           }
         }
-      });
-    } else {
-      console.log(`It's a draw!`);
-      display.toggleLock();
+      });  
     }
   }
 
@@ -87,12 +94,17 @@ function playControl () {
     display.clearBoard();
     currentPlayer = player1;
     display.toggleLock();
+    stop = false;
   }
 
   function resetGame() {
+    if (currentPlayer === player2) {
+      display.showNextTurn();
+    }
     board.clearBoard();
     display.clearBoard();
     currentPlayer = player1;
+    stop = false;
   }
 
   return {
@@ -136,10 +148,19 @@ function displayController() {
     })
   }
 
+  function showNextTurn() {
+    const play1 = document.getElementById('player1');
+    const play2 = document.getElementById('player2');
+    
+    play1.classList.toggle('turn');
+    play2.classList.toggle('turn');
+  }
+
   return {
     turn,
     toggleLock,
-    clearBoard
+    clearBoard,
+    showNextTurn
   }
 }
 
@@ -164,6 +185,14 @@ function displayController() {
     newGame.setAttribute('class', 'control');
     newGame.setAttribute('id', 'newGame');
     newGame.addEventListener('click', function() {
+      
+      const p1Name = document.querySelector('#p1Name').value;
+      const p1Token = document.querySelector('#p1Token').value;
+      const p2Name = document.querySelector('#p2Name').value;
+      const p2Token = document.querySelector('#p2Token').value;
+
+      player1 = player(p1Name, p1Token);
+      player2 = player(p2Name, p2Token);
       play.newGame();
       newGame.hidden = true;
       reset.hidden = false;
@@ -174,6 +203,15 @@ function displayController() {
     reset.setAttribute('id', 'reset');
     reset.hidden = true;
     reset.addEventListener('click', function() {
+      
+      const p1Name = document.querySelector('#p1Name').value;
+      const p1Token = document.querySelector('#p1Token').value;
+      const p2Name = document.querySelector('#p2Name').value;
+      const p2Token = document.querySelector('#p2Token').value;
+
+      player1 = player(p1Name, p1Token);
+      player2 = player(p2Name, p2Token);
+
       play.resetGame();
     })
   
@@ -182,8 +220,8 @@ function displayController() {
   
 })();  
 
-const player1 = player('Matt', 'x');
-const player2 = player('Andrea', 'o');
+let player1;
+let player2;
 
 const play = playControl();
 const board = gameBoard();

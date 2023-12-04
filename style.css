@@ -20,3 +20,7 @@ main {
 .boardSquare {
   height: 60px;
 }
+
+.turn {
+  background-color: palegreen;
+}

@@ -7,15 +7,31 @@
   <title>Tick Tac Toe</title>
 </head>
 <body>
-  <header>Tic Tac Toe</header>
+  <header><h1>Tic Tac Toe</h1></header>
   <main>
-    <div id="player1" class="player">Player 1</div>
+    <div id="player1" class="player turn">
+      <h2>Player 1</h2>
+      <form action="" id="p1Details">
+        <label for="p1Name">Name</label>
+        <input type="text" id="p1Name" required>
+        <label for="p1Token">Token</label>
+        <input type="text" id="p1Token" maxlength="1" required>
+      </form>
+    </div>
     <div id="game">
       <div id="board"></div>
       <div id="message">Messages</div>
       <div id="controls"></div>
     </div>
-    <div id="player2" class="player">Player 2</div>
+    <div id="player2" class="player">
+      <h2>Player 2</h2>
+      <form action="" id="p2Details">
+        <label for="p2Name">Name</label>
+        <input type="text" id="p2Name" required>
+        <label for="p2Token">Token</label>
+        <input type="text" id="p2Token" maxlength="1" required>
+      </form>
+    </div>
   </main>
   <script src="./script.js"></script>
 <body>
