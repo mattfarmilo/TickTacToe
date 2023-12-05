@@ -4,10 +4,6 @@ function gameBoard () {
     [0,0,0],
     [0,0,0]
   ];
-  
-  function logBoard() {
-    console.log(board);
-  }
 
   function checkValid (row, col) {
     return board[row][col] === 0;
@@ -15,7 +11,6 @@ function gameBoard () {
   
   function placeMark (player, row, col) {
     board[row][col] = player;
-    logBoard();
   }
 
   function getBoard() {
@@ -28,7 +23,6 @@ function gameBoard () {
       [0,0,0],
       [0,0,0]
     ];
-    console.log(board);
   }
 
   return {
@@ -97,7 +91,7 @@ function playControl () {
     stop = false;
   }
 
-  function resetGame() {
+  function resetGame() {    
     if (currentPlayer === player2) {
       display.showNextTurn();
     }
@@ -107,11 +101,16 @@ function playControl () {
     stop = false;
   }
 
+  function getCurrentPlayer() {
+    return currentPlayer;
+  }
+
   return {
     turn,
     checkWin,
     newGame,
-    resetGame
+    resetGame,
+    getCurrentPlayer
   }
 }
 
@@ -123,6 +122,9 @@ function player (name, token) {
 }
 
 function displayController() {
+  const play1 = document.getElementById('player1');
+  const play2 = document.getElementById('player2');
+  
   function turn(row, col, token) {
     const button = document.getElementById(`r${row}c${col}`);
     button.innerText = token;
@@ -145,13 +147,16 @@ function displayController() {
     const buttons = document.querySelectorAll('.boardSquare');
     buttons.forEach((button) => {
       button.innerText = '';
-    })
+    });
+
+    play1.classList.add('turn');
+    play2.classList.remove('turn');
+
+    const message = document.querySelector('#message');
+    message.innerText = '';
   }
 
-  function showNextTurn() {
-    const play1 = document.getElementById('player1');
-    const play2 = document.getElementById('player2');
-    
+  function showNextTurn() { 
     play1.classList.toggle('turn');
     play2.classList.toggle('turn');
   }
@@ -197,6 +202,7 @@ function displayController() {
       newGame.hidden = true;
       reset.hidden = false;
     })
+
   const reset = document.createElement('button');
     reset.innerText = 'Reset';
     reset.setAttribute('class', 'control');
@@ -211,7 +217,7 @@ function displayController() {
 
       player1 = player(p1Name, p1Token);
       player2 = player(p2Name, p2Token);
-
+      
       play.resetGame();
     })
   
